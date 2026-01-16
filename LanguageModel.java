@@ -35,19 +35,23 @@ public class LanguageModel {
 	public void train(String fileName) {
 		// Your code goes here
         In in = new In(fileName);
-        String corpus = in.readAll();
-        for (int i = 0; i < corpus.length() - windowLength; i++){
-            String window = corpus.substring(i, i + windowLength);
-            char nextChar = corpus.charAt(i + windowLength);
-            List probabilities = CharDataMap.get(window);
-            if (probabilities == null){
-                probabilities = new List();
-                CharDataMap.put(window, probabilities);
-            }
-            probabilities.update(nextChar);
+        String window = "";
+        for (int i = 0; i < windowLength; i++){
+            window += in.readChar();
         }
+        while (!in.isEmpty()){
+            char nextChar = in.readChar();
+            List probabilities = CharDataMap.get(window);
+            if (probabilities == null) {
+            probabilities = new List();
+            CharDataMap.put(window, probabilities);
+        }
+        probabilities.update(nextChar);
+        window = window.substring(1) + nextChar; 
+        }
+
         for (List list : CharDataMap.values()) {
-                 calculateProbabilities(list);
+            calculateProbabilities(list);
             }
 	}
 
@@ -58,18 +62,15 @@ public class LanguageModel {
         int count = 0;
         for (int i = 0; i < probs.getSize(); i++) {
             count += probs.get(i).count;
-    }
-    double cumulativeProb = 0;
-    for (int i = 0; i < probs.getSize(); i++) {
-        CharData cd = probs.get(i);
-        cd.p = (double) cd.count / count;
-        cumulativeProb += cd.p;
-        if (i == probs.getSize() - 1)
-            cd.cp = 1.0;
-        else{
+        }
+        double cumulativeProb = 0;
+        for (int i = 0; i < probs.getSize(); i++) {
+            CharData cd = probs.get(i);
+            cd.p = (double) cd.count / count;
+            cumulativeProb += cd.p;
             cd.cp = cumulativeProb;
             }
-        }
+        
 	}
 
     // Returns a random character from the given probabilities list.
