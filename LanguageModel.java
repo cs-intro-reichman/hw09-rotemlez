@@ -57,13 +57,14 @@ public class LanguageModel {
 		// Your code goes here
         int count = 0;
         for (int i = 0; i < probs.getSize(); i++) {
-            CharData cd = probs.get(i); 
-            count += cd.count;
+            count += probs.get(i).count;
     }
     double cumulativeProb = 0;
     for (int i = 0; i < probs.getSize(); i++) {
         CharData cd = probs.get(i);
         cd.p = (double) cd.count / count;
+        if (i == probs.getSize() - 1)
+            cd.cp = 1.0;
         cumulativeProb += cd.p;
         cd.cp = cumulativeProb;
         }
