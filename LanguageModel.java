@@ -36,7 +36,7 @@ public class LanguageModel {
 		// Your code goes here
         In in = new In(fileName);
         String corpus = in.readAll();
-        for (int i = 0; i <= corpus.length() - windowLength - 1; i++){
+        for (int i = 0; i < corpus.length() - windowLength; i++){
             String window = corpus.substring(i, i + windowLength);
             char nextChar = corpus.charAt(i + windowLength);
             List probabilities = CharDataMap.get(window);
@@ -65,8 +65,10 @@ public class LanguageModel {
         cd.p = (double) cd.count / count;
         if (i == probs.getSize() - 1)
             cd.cp = 1.0;
-        cumulativeProb += cd.p;
+        else{
+            cumulativeProb += cd.p;
         cd.cp = cumulativeProb;
+            }
         }
 	}
 
