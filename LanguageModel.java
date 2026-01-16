@@ -98,7 +98,7 @@ public class LanguageModel {
             return initialText;
         String result = initialText;
         while (result.length() < textLength){
-            String current = result.substring(result.length() - windowLength, result.length());
+            String current = result.substring(result.length() - windowLength);
             List probs = CharDataMap.get(current);
             if (probs != null){
                  char nextChar = getRandomChar(probs);
