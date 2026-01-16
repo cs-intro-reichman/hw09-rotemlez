@@ -63,11 +63,11 @@ public class LanguageModel {
     for (int i = 0; i < probs.getSize(); i++) {
         CharData cd = probs.get(i);
         cd.p = (double) cd.count / count;
+        cumulativeProb += cd.p;
         if (i == probs.getSize() - 1)
             cd.cp = 1.0;
         else{
-            cumulativeProb += cd.p;
-        cd.cp = cumulativeProb;
+            cd.cp = cumulativeProb;
             }
         }
 	}
@@ -97,7 +97,7 @@ public class LanguageModel {
             return initialText;
         String result = initialText;
         while (result.length() < textLength){
-            String current = result.substring(result.length() - windowLength);
+            String current = result.substring(result.length() - windowLength, result.length());
             List probs = CharDataMap.get(current);
             if (probs != null){
                  char nextChar = getRandomChar(probs);
