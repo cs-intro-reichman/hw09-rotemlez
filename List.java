@@ -62,7 +62,7 @@ public class List {
         Node current = first;
         int index = 0;
         while (current != null){
-            if (current.cp.chr == chr)
+            if (current.cp.equals(chr))
                 return index;
             current = current.next;
             index++;
@@ -75,15 +75,11 @@ public class List {
      *  given chr to the beginning of this list. */
     public void update(char chr) {
         // Your code goes here
-        Node current = first;
-        while (current != null){
-            if (current.cp.chr == chr){
-                current.cp.count++;
-                return;
-            }
-            current = current.next;
-    }
-    addFirst(chr);
+        int index = indexOf(chr);
+        if (index != -1)
+            get(index).count++;
+        else
+             addFirst(chr);
     }
 
     /** GIVE If the given character exists in one of the CharData objects
