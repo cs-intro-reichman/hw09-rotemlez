@@ -76,14 +76,21 @@ public class List {
     public void update(char chr) {
         // Your code goes here
         Node current = first;
+        int count = -1;
         while (current != null){
             if (current.cp.chr == chr){
-                current.cp.count++;
-                return;
+                count++;
+                break;
             }
             current = current.next;
         }
-        addFirst(chr);
+        if (count != -1){
+            remove(chr);
+            addFirst(chr);
+            first.cp.count = count + 1;
+        }
+        else
+          addFirst(chr);
     }
 
     /** GIVE If the given character exists in one of the CharData objects
