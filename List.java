@@ -75,25 +75,12 @@ public class List {
      *  given chr to the beginning of this list. */
     public void update(char chr) {
         // Your code goes here
-        if (first == null){
-            addFirst(chr);
-            return;
-        }
-        if (first.cp.chr == chr){
-            first.cp.count++;
-            return;
-        }
-        Node current = first.next;
-        Node prev = first;
+        Node current = first;
         while (current != null){
             if (current.cp.chr == chr){
                 current.cp.count++;
-                prev.next = current.next;
-                current.next = first;
-                first = current;
                 return;
             }
-            prev = current;
             current = current.next;
     }
     addFirst(chr);
