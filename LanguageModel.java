@@ -60,18 +60,16 @@ public class LanguageModel {
 	void calculateProbabilities(List probs) {				
 		// Your code goes here
         int count = 0;
-        for (int i = 0; i < probs.getSize(); i++) {
-            count += probs.get(i).count;
-        }
+        ListIterator it = probs.listIterator(0);
+        while (it.hasNext())
+            count += it.next().count;
         double cumulativeProb = 0.0;
-        for (int i = 0; i < probs.getSize(); i++) {
-            CharData cd = probs.get(i);
+        it = probs.listIterator(0);
+        while (it.hasNext()) {
+            CharData cd = it.next();
             cd.p = (double) cd.count / count;
             cumulativeProb += cd.p;
-            if (i == probs.getSize() - 1)
-                cd.cp = 1.0;
-            else
-                cd.cp = cumulativeProb;
+            cd.cp = cumulativeProb;
             }
         
 	}
@@ -80,12 +78,14 @@ public class LanguageModel {
 	char getRandomChar(List probs) {
 		// Your code goes here
         double r = randomGenerator.nextDouble();
-        for (int i = 0; i < probs.getSize(); i++){
-            CharData cd = probs.get(i);
+        ListIterator it = probs.listIterator(0);
+        CharData cd = null;
+        while (it.hasNext()){
+            cd = it.next();
             if (r < cd.cp)
                 return cd.chr;
         }
-		return probs.get(probs.getSize() - 1).chr;
+		return cd.chr;
 	}
 
     /**
@@ -126,5 +126,21 @@ public class LanguageModel {
 
     public static void main(String[] args) {
 		// Your code goes here
+        int windowLength = Integer.parseInt(args[0]); 
+    String initialText = args[1]; 
+    int generatedTextLength = Integer.parseInt(args[2]); 
+    Boolean randomGeneration = args[3].equals("random"); 
+    String fileName = args[4]; 
+
+    LanguageModel lm; 
+    if (randomGeneration) {
+        lm = new LanguageModel(windowLength);
+    } else {
+        lm = new LanguageModel(windowLength, 20); 
+    }
+
+    lm.train(fileName); 
+    System.out.println(lm.generate(initialText, generatedTextLength)); 
+
     }
 }

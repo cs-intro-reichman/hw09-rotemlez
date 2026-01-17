@@ -47,9 +47,9 @@ public class List {
         Node current = first;
         while (current != null){
             st += current.cp.toString();
-            current = current.next;
             if (current.next != null)
                 st += " ";
+            current = current.next;
         }
         return st + ")";
     }
