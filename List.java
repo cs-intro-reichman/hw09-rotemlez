@@ -47,9 +47,9 @@ public class List {
         Node current = first;
         while (current != null){
             st += current.cp.toString();
+            current = current.next;
             if (current.next != null)
                 st += " ";
-            current = current.next;
         }
         return st + ")";
     }
@@ -90,14 +90,14 @@ public class List {
         if (first == null){
             return false;
         }
-        if (first.cp.chr == chr){
+        if (first.cp.equals(chr)){
             first = first.next;
             size--;
             return true;
         }
         Node current = first;
         while(current.next != null) {
-            if (current.next.cp.chr == chr){
+            if (current.next.cp.equals(chr)){
                 current.next = current.next.next;
                 size--;
                 return true;

@@ -43,8 +43,8 @@ public class LanguageModel {
             char nextChar = in.readChar();
             List probabilities = CharDataMap.get(window);
             if (probabilities == null) {
-            probabilities = new List();
-            CharDataMap.put(window, probabilities);
+                probabilities = new List();
+                CharDataMap.put(window, probabilities);
         }
         probabilities.update(nextChar);
         window = window.substring(1) + nextChar; 
@@ -63,12 +63,15 @@ public class LanguageModel {
         for (int i = 0; i < probs.getSize(); i++) {
             count += probs.get(i).count;
         }
-        double cumulativeProb = 0;
+        double cumulativeProb = 0.0;
         for (int i = 0; i < probs.getSize(); i++) {
             CharData cd = probs.get(i);
             cd.p = (double) cd.count / count;
             cumulativeProb += cd.p;
-            cd.cp = cumulativeProb;
+            if (i == probs.getSize() - 1)
+                cd.cp = 1.0;
+            else
+                cd.cp = cumulativeProb;
             }
         
 	}
