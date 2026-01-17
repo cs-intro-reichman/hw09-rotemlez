@@ -100,7 +100,8 @@ public class LanguageModel {
         if (initialText.length() < windowLength)
             return initialText;
         String result = initialText;
-        while (result.length() < textLength){
+        int totalLength = initialText.length() + textLength;
+        while (result.length() < totalLength){
             String current = result.substring(result.length() - windowLength);
             List probs = CharDataMap.get(current);
             if (probs != null){
